@@ -42,7 +42,7 @@ function whoWins(computerSelection, humanSelection) {
     if (computerSelection == humanSelection) {
         return "Tie";
     }
-    else if ((computerSelection - humanSelection) == 1 || (computerSelection - humanSelection) == -2) {
+    else if ((computerSelection - humanSelection) == 1 ||  (computerSelection - humanSelection) == -2) {
         return "Computer"; // computer wins
     }
     else {
@@ -67,17 +67,59 @@ function intToWeapon(selection) {
 function playRound() {
     let computerSelection = computerPlay();
     let humanSelection = humanPlay();
+    return [whoWins(computerSelection, humanSelection), computerSelection, humanSelection]; // Return array [round outcome, computer weapon, human weapon]
+}
+
+function roundResultDisplay(outcome, roundNo, computerSelection, humanSelection, computerScore, humanScore) {
     let alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n`
-    
-    if (whoWins(computerSelection, humanSelection) == "Tie") {
+    if (outcome == "Tie") {
         alertString += "It's a tie!";
     }
     else {
-        alertString += `${whoWins(computerSelection, humanSelection)} wins!`;
+        alertString += `${outcome} wins the round!`;
+    }
+    alertString += `\n\nThis round: ${roundNo}\n\nCurrent score:\nHuman: ${humanScore}\nComputer: ${computerScore}`;
+    alert(alertString);
+}
+
+function gameResultDisplay(computerScore, humanScore) {
+    let alertString = `Final score:\nHuman: ${humanScore}\nComputer: ${computerScore}`;
+    const scoreDifference = computerScore - humanScore;
+    if (scoreDifference == 0) {
+        alertString += "\n\nGame is a tie!"
+    }
+    else if (scoreDifference > 0) {
+        alertString += "\n\nComputer wins the game!"
+    }
+    else {
+        alertString += "\n\nHuman wins the game!"
     }
     alert(alertString);
 }
 
+function game(noRounds = 5) {
+    let humanScore = 0;
+    let computerScore = 0;
+    let roundNo;
+    
+    for (roundNo = 1; roundNo <= noRounds; roundNo++) {
+        let roundOutcomeArray = playRound();
+        let roundOutcome = roundOutcomeArray[0];
+        let computerSelection = roundOutcomeArray[1];
+        let humanSelection = roundOutcomeArray[2];
 
-// Call function and play an actual round
-playRound();
+        if (roundOutcome == "Computer") {
+            computerScore++;
+        }
+        else if (roundOutcome == "Human") {
+            humanScore++;
+        }
+
+        roundResultDisplay(roundOutcome, roundNo, computerSelection, humanSelection, computerScore, humanScore);
+    }
+    gameResultDisplay(computerScore, humanScore);
+}
+
+
+// Call game function and play a game!
+game();
