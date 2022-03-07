@@ -40,13 +40,13 @@ function isValid(humanInput) {
 // This function takes 0:paper, 1:scissors, or 2:rock, and determines who, if anyone, won the round
 function whoWins(computerSelection, humanSelection) {
     if (computerSelection == humanSelection) {
-        return "tie";
+        return "Tie";
     }
-    else if (computerSelection - humanPlay == 1) {
-        return "computer"; // computer wins
+    else if ((computerSelection - humanSelection) == 1 || (computerSelection - humanSelection) == -2) {
+        return "Computer"; // computer wins
     }
     else {
-        return "human"; // human wins
+        return "Human"; // human wins
     }
 }
 
@@ -67,12 +67,13 @@ function intToWeapon(selection) {
 function playRound() {
     let computerSelection = computerPlay();
     let humanSelection = humanPlay();
-
-    if (whoWins(computerSelection, humanSelection) == "tie") {
-        alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\nIt's a tie!`;
+    let alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n`
+    
+    if (whoWins(computerSelection, humanSelection) == "Tie") {
+        alertString += "It's a tie!";
     }
     else {
-        alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n${whoWins(computerSelection, humanSelection)} wins!`;
+        alertString += `${whoWins(computerSelection, humanSelection)} wins!`;
     }
     alert(alertString);
 }
