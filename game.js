@@ -67,7 +67,13 @@ function intToWeapon(selection) {
 function playRound() {
     let computerSelection = computerPlay();
     let humanSelection = humanPlay();
-    alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n${whoWins(computerSelection, humanSelection)} wins!`;
+
+    if (whoWins(computerSelection, humanSelection) == "tie") {
+        alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\nIt's a tie!`;
+    }
+    else {
+        alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n${whoWins(computerSelection, humanSelection)} wins!`;
+    }
     alert(alertString);
 }
 
