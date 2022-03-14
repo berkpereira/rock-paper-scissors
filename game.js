@@ -71,14 +71,14 @@ function playRound() {
 }
 
 function roundResultDisplay(outcome, roundNo, computerSelection, humanSelection, computerScore, humanScore) {
-    let alertString = `You chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n`
+    let alertString = `This round: ${roundNo}\n\nYou chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n`
     if (outcome == "Tie") {
         alertString += "It's a tie!";
     }
     else {
         alertString += `${outcome} wins the round!`;
     }
-    alertString += `\n\nThis round: ${roundNo}\n\nCurrent score:\nHuman: ${humanScore}\nComputer: ${computerScore}`;
+    alertString += `\n\nCurrent score:\nHuman: ${humanScore}\nComputer: ${computerScore}`;
     alert(alertString);
 }
 
