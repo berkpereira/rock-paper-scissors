@@ -68,19 +68,38 @@ function playRound(e) {
     roundNoDisplay(roundNoElement, roundNo, roundNoLimit);
     
     const scoreTallyElement = document.querySelector("#score-tally");
-    const humanScore = Number(scoreTallyElement.getAttribute("data-human-score"));
-    const computerScore = Number(scoreTallyElement.getAttribute("data-computer-score"));
+    let humanScore = Number(scoreTallyElement.getAttribute("data-human-score"));
+    let computerScore = Number(scoreTallyElement.getAttribute("data-computer-score"));
     scoreTallyDisplay(scoreTallyElement, computerScore, humanScore, whoWins(computerSelection, humanSelection));
 
     // Reassign roundNo now, since it was changed by roundNoDisplay(), in order to check for end of game
+    // Same for each of the player scores, due to reassignment within scoreTallyDisplay
     roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
+    humanScore = Number(scoreTallyElement.getAttribute("data-human-score"));
+    computerScore = Number(scoreTallyElement.getAttribute("data-computer-score"));
     if (roundNo == roundNoLimit) {
         endGameDisplay(computerScore, humanScore);
     }
 }
 
+function numSelectionToEmoji(numericalSelection) {
+    switch (numericalSelection) {
+        case 0:
+            return "&#9995;";
+            break;
+        case 1:
+            return "&#9996;";
+            break;
+        case 2:
+            return "&#9994;";
+            break;
+    }
+}
+
 function roundDOMResultDisplay(computerSelection, humanSelection, outputContainer) {
-    let resultString = `You chose ${intToWeapon(humanSelection)}.<br>Computer chose ${intToWeapon(computerSelection)}.<br>`;
+    const humanEmoji = numSelectionToEmoji(humanSelection);
+    const computerEmoji = numSelectionToEmoji(computerSelection);
+    let resultString = `${humanEmoji}               ${computerEmoji}<br>You chose ${intToWeapon(humanSelection)}.<br>Computer chose ${intToWeapon(computerSelection)}.<br>`;
     if (whoWins(computerSelection, humanSelection) === "Tie") {
         resultString += "It's a tie!";
     }
