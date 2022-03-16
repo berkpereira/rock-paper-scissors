@@ -81,8 +81,21 @@ function playRound(e) {
             break;
         }
     }
-    console.log([whoWins(computerSelection, humanSelection), computerSelection, humanSelection]); // Return array [round outcome, computer weapon, human weapon]);
+    const outputContainer = document.querySelector(".results");
+    roundDOMResultDisplay(computerSelection, humanSelection, outputContainer);
+    //console.log([whoWins(computerSelection, humanSelection), computerSelection, humanSelection]); // Return array [round outcome, computer weapon, human weapon]);
     //return [whoWins(computerSelection, humanSelection), computerSelection, humanSelection]; // Return array [round outcome, computer weapon, human weapon]
+}
+
+function roundDOMResultDisplay(computerSelection, humanSelection, outputContainer) {
+    let resultString = `You chose ${intToWeapon(humanSelection)}.<br>Computer chose ${intToWeapon(computerSelection)}.<br>`;
+    if (whoWins(computerSelection, humanSelection) === "Tie") {
+        resultString += "It's a tie!";
+    }
+    else {
+        resultString += `${whoWins(computerSelection, humanSelection)} wins!`;
+    }
+    outputContainer.innerHTML = resultString;
 }
 
 function roundResultDisplay(outcome, roundNo, computerSelection, humanSelection, computerScore, humanScore) {
