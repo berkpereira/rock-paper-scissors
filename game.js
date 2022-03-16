@@ -10,33 +10,6 @@ function computerPlay() {
     return randomInteger(0,2); // Returns either 0:paper, 1:scissors, or 2:rock
 }
 
-function humanPlay() {
-    let humanSelection = prompt("Choose your weapon, rock, paper, or scissors?");
-    while (!isValid(humanSelection)) {
-        humanSelection = prompt("Invalid input! Choose between rock, paper, or scissors:");
-    }
-    switch (humanSelection) {
-        case "paper":
-            return 0;
-            break;
-        case "scissors":
-            return 1;
-            break;
-        case "rock":
-            return 2;
-            break;
-    }
-}
-
-function isValid(humanInput) {
-    if (humanInput == "rock" || humanInput == "paper" || humanInput == "scissors") {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
 // This function takes 0:paper, 1:scissors, or 2:rock, and determines who, if anyone, won the round
 function whoWins(computerSelection, humanSelection) {
     if (computerSelection == humanSelection) {
@@ -65,10 +38,16 @@ function intToWeapon(selection) {
 }
 
 function playRound(e) {
+    // Setting the round number limit here!
+    const roundNoLimit = 5;
+
+    // Taking computer and human plays
     const computerSelection = computerPlay();
     const humanSelectionWord = e.srcElement.innerText;
     let humanSelection;
-    switch (humanSelectionWord) {
+    
+    // Converting human selection from word 
+    switch (humanSelectionWord.split(" ")[0]) {
         case "Rock":
             humanSelection = 2;
             break;
@@ -82,9 +61,12 @@ function playRound(e) {
         }
     }
     const outputContainer = document.querySelector(".results");
+    const roundNoElement = document.querySelector("#round-no");
+    const roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
+    console.log(roundNo);
+    
     roundDOMResultDisplay(computerSelection, humanSelection, outputContainer);
-    //console.log([whoWins(computerSelection, humanSelection), computerSelection, humanSelection]); // Return array [round outcome, computer weapon, human weapon]);
-    //return [whoWins(computerSelection, humanSelection), computerSelection, humanSelection]; // Return array [round outcome, computer weapon, human weapon]
+    roundNoDisplay(roundNoElement, roundNo, roundNoLimit);
 }
 
 function roundDOMResultDisplay(computerSelection, humanSelection, outputContainer) {
@@ -98,16 +80,10 @@ function roundDOMResultDisplay(computerSelection, humanSelection, outputContaine
     outputContainer.innerHTML = resultString;
 }
 
-function roundResultDisplay(outcome, roundNo, computerSelection, humanSelection, computerScore, humanScore) {
-    let alertString = `This round: ${roundNo}\n\nYou chose ${intToWeapon(humanSelection)}. Computer chose ${intToWeapon(computerSelection)}.\n`
-    if (outcome == "Tie") {
-        alertString += "It's a tie!";
+function roundNoDisplay(roundNoElement, roundNo, roundNoLimit) {
+    if (roundNo < roundNoLimit) {
+        roundNoElement.innerText = `Current round: ${roundNo + 1}`;
     }
-    else {
-        alertString += `${outcome} wins the round!`;
-    }
-    alertString += `\n\nCurrent score:\nHuman: ${humanScore}\nComputer: ${computerScore}`;
-    alert(alertString);
 }
 
 function gameResultDisplay(computerScore, humanScore) {
