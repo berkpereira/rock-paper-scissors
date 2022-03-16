@@ -60,7 +60,7 @@ function playRound(e) {
             break;
         }
     }
-    const outputContainer = document.querySelector(".results");
+    const outputContainer = document.querySelector("#round-results");
     const roundNoElement = document.querySelector("#round-no");
     let roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
     
@@ -75,7 +75,7 @@ function playRound(e) {
     // Reassign roundNo now, since it was changed by roundNoDisplay(), in order to check for end of game
     roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
     if (roundNo == roundNoLimit) {
-        endGameDisplay();
+        endGameDisplay(computerScore, humanScore);
     }
 }
 
@@ -107,8 +107,22 @@ function scoreTallyDisplay(scoreTallyElement, computerScore, humanScore, roundWi
     }
 }
 
-function endGameDisplay() {
+function endGameDisplay(computerScore, humanScore) {
+    const endGameContainer = document.createElement("h3");
+    if (computerScore > humanScore) {
+        endGameContainer.innerText = "Computer wins the game!";
+    }
+    else if (computerScore < humanScore) {
+        endGameContainer.innerText = "Human wins the game!";
+    }
+    else {
+        endGameContainer.innerText = "Game is a tie!";
+    }
+    const documentBody = document.querySelector("body");
+    documentBody.appendChild(endGameContainer);
 
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(button => button.removeEventListener("click", playRound));
 }
 
 
