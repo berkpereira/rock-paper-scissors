@@ -62,11 +62,21 @@ function playRound(e) {
     }
     const outputContainer = document.querySelector(".results");
     const roundNoElement = document.querySelector("#round-no");
-    const roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
-    console.log(roundNo);
+    let roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
     
     roundDOMResultDisplay(computerSelection, humanSelection, outputContainer);
     roundNoDisplay(roundNoElement, roundNo, roundNoLimit);
+    
+    const scoreTallyElement = document.querySelector("#score-tally");
+    const humanScore = Number(scoreTallyElement.getAttribute("data-human-score"));
+    const computerScore = Number(scoreTallyElement.getAttribute("data-computer-score"));
+    scoreTallyDisplay(scoreTallyElement, computerScore, humanScore, whoWins(computerSelection, humanSelection));
+
+    // Reassign roundNo now, since it was changed by roundNoDisplay(), in order to check for end of game
+    roundNo = Number(roundNoElement.innerText.split(" ")[roundNoElement.innerText.split(" ").length - 1]);
+    if (roundNo == roundNoLimit) {
+        endGameDisplay();
+    }
 }
 
 function roundDOMResultDisplay(computerSelection, humanSelection, outputContainer) {
@@ -86,43 +96,21 @@ function roundNoDisplay(roundNoElement, roundNo, roundNoLimit) {
     }
 }
 
-function gameResultDisplay(computerScore, humanScore) {
-    let alertString = `Final score:\nHuman: ${humanScore}\nComputer: ${computerScore}`;
-    const scoreDifference = computerScore - humanScore;
-    if (scoreDifference == 0) {
-        alertString += "\n\nGame is a tie!"
+function scoreTallyDisplay(scoreTallyElement, computerScore, humanScore, roundWinner) {
+    if (roundWinner == "Computer") {
+        scoreTallyElement.innerHTML = `Current score:<br>Human: ${humanScore}<br>Computer: ${computerScore + 1}`;
+        scoreTallyElement.setAttribute("data-computer-score", computerScore + 1);
     }
-    else if (scoreDifference > 0) {
-        alertString += "\n\nComputer wins the game!"
+    else if (roundWinner == "Human") {
+        scoreTallyElement.innerHTML = `Current score:<br>Human: ${humanScore + 1}<br>Computer: ${computerScore}`;
+        scoreTallyElement.setAttribute("data-human-score", humanScore + 1);
     }
-    else {
-        alertString += "\n\nHuman wins the game!"
-    }
-    alert(alertString);
 }
 
-function game(noRounds = 5) {
-    let humanScore = 0;
-    let computerScore = 0;
-    let roundNo;
-    
-    for (roundNo = 1; roundNo <= noRounds; roundNo++) {
-        let roundOutcomeArray = playRound();
-        let roundOutcome = roundOutcomeArray[0];
-        let computerSelection = roundOutcomeArray[1];
-        let humanSelection = roundOutcomeArray[2];
+function endGameDisplay() {
 
-        if (roundOutcome == "Computer") {
-            computerScore++;
-        }
-        else if (roundOutcome == "Human") {
-            humanScore++;
-        }
-
-        roundResultDisplay(roundOutcome, roundNo, computerSelection, humanSelection, computerScore, humanScore);
-    }
-    gameResultDisplay(computerScore, humanScore);
 }
+
 
 // Listen to clicks and react by playing rounds
 const buttons = document.querySelectorAll("button");
