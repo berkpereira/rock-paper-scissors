@@ -64,10 +64,25 @@ function intToWeapon(selection) {
     }
 }
 
-function playRound() {
-    let computerSelection = computerPlay();
-    let humanSelection = humanPlay();
-    return [whoWins(computerSelection, humanSelection), computerSelection, humanSelection]; // Return array [round outcome, computer weapon, human weapon]
+function playRound(e) {
+    const computerSelection = computerPlay();
+    const humanSelectionWord = e.srcElement.innerText;
+    let humanSelection;
+    switch (humanSelectionWord) {
+        case "Rock":
+            humanSelection = 2;
+            break;
+        case "Paper": {
+            humanSelection = 0;
+            break;
+        }
+        case "Scissors": {
+            humanSelection = 1;
+            break;
+        }
+    }
+    console.log([whoWins(computerSelection, humanSelection), computerSelection, humanSelection]); // Return array [round outcome, computer weapon, human weapon]);
+    //return [whoWins(computerSelection, humanSelection), computerSelection, humanSelection]; // Return array [round outcome, computer weapon, human weapon]
 }
 
 function roundResultDisplay(outcome, roundNo, computerSelection, humanSelection, computerScore, humanScore) {
@@ -120,6 +135,7 @@ function game(noRounds = 5) {
     gameResultDisplay(computerScore, humanScore);
 }
 
+// Listen to clicks and react by playing rounds
+const buttons = document.querySelectorAll("button");
 
-// Call game function and play a game!
-game();
+buttons.forEach(button => button.addEventListener("click", playRound));
